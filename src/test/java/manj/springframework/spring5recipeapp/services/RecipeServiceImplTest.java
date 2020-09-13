@@ -33,10 +33,11 @@ public class RecipeServiceImplTest {
 		Recipe recipe = new Recipe();
 		HashSet<Recipe> recipesData = new HashSet<>();
 		recipesData.add(recipe);
-		
+
 		Mockito.when(recipeRepository.findAll()).thenReturn(recipesData);
 		Set<Recipe> recipes = recipeService.getRecipes();
 		assertEquals(recipes.size(), 1);
+		Mockito.verify(recipeRepository, Mockito.times(1)).findAll();
 	}
 
 }
