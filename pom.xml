@@ -49,17 +49,13 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<!--<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>-->
+			<!--<exclusions> <exclusion> <groupId>org.junit.vintage</groupId> <artifactId>junit-vintage-engine</artifactId> 
+				</exclusion> </exclusions> -->
 		</dependency>
 	</dependencies>
 
@@ -71,15 +67,18 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.21.0</version>
 				<configuration>
 					<includes>
 						<include>**/*IT.java</include>
 					</includes>
-					<!-- <additionalClasspathElements>
-						<additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
-					</additionalClasspathElements> -->
+					<!-- <additionalClasspathElements> <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement> 
+						</additionalClasspathElements> -->
 					<parallel>none</parallel>
 				</configuration>
 				<executions>
