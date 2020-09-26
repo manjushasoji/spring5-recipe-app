@@ -1,14 +1,17 @@
 package manj.springframework.spring5recipeapp.services;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
 import org.mockito.MockitoAnnotations;
 
 import manj.springframework.spring5recipeapp.domain.Recipe;
@@ -38,6 +41,16 @@ public class RecipeServiceImplTest {
 		Set<Recipe> recipes = recipeService.getRecipes();
 		assertEquals(recipes.size(), 1);
 		Mockito.verify(recipeRepository, Mockito.times(1)).findAll();
+	}
+	@Test
+	public void testGetRecipesById() {
+		Recipe recipe = new Recipe();
+		recipe.setId(1L);
+		when(recipeRepository.findById(any())).thenReturn(Optional.of(recipe));
+		Recipe returnedRecipe = recipeService.findById(1L);
+		assertNotNull("Null Recipe Returned", returnedRecipe);
+		verify(recipeRepository,times(1)).findById(anyLong());
+		verify(recipeRepository,never()).findAll();
 	}
 
 }
