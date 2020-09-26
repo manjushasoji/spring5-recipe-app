@@ -1,5 +1,6 @@
 package manj.springframework.spring5recipeapp.controllers;
 
+import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -31,9 +32,12 @@ class RecipeControllerTest {
 		Recipe recipe = new Recipe();
 		recipe.setId(1L);
 		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+		
+		when(recipeService.findById(anyLong())).thenReturn(recipe);
 		mockMvc.perform(MockMvcRequestBuilders.get("/recipe/show/1"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.view().name("recipe/show"));
+			.andExpect(MockMvcResultMatchers.view().name("recipe/show"))
+			.andExpect(MockMvcResultMatchers.model().attributeExists("recipe"));
 	}
 
 }

@@ -112,6 +112,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 		guacRecipe.setCookTime(10);
 		guacRecipe.setPrepTime(20);
 		guacRecipe.setDifficulty(Difficulty.EASY);
+		guacRecipe.setServings(5);
+		guacRecipe.setSource("Simply Recipies");
+		guacRecipe.setUrl("ww.simpyrecipies.com");
 		guacRecipe.setDirections(
 				"1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon\" +\n"
 						+ "                \"\\n\" +\n"
@@ -159,6 +162,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 		tacosRecipe.setPrepTime(25);
 		tacosRecipe.setDescription("Spicy Grilled Chicken Taco");
 		tacosRecipe.setDifficulty(Difficulty.MODERATE);
+		tacosRecipe.setServings(4);
+		tacosRecipe.setSource("Simply Recipes");
+		tacosRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvpiV9Sd");
 		tacosRecipe.setDirections("1 Prepare a gas or charcoal grill for medium-high, direct heat.\\n\" +\n"
 				+ "                \"2 Make the marinade and coat the chicken: In a large bowl, stir together the chili powder, oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to make a loose paste. Add the chicken to the bowl and toss to coat all over.\\n\" +\n"
 				+ "                \"Set aside to marinate while the grill heats and you prepare the rest of the toppings.\\n\" +\n"
