@@ -14,6 +14,9 @@ import org.mockito.Mockito;
 
 import org.mockito.MockitoAnnotations;
 
+import manj.springframework.spring5recipeapp.commands.RecipeCommand;
+import manj.springframework.spring5recipeapp.converters.RecipeCommandToRecipe;
+import manj.springframework.spring5recipeapp.converters.RecipeToRecipeCommand;
 import manj.springframework.spring5recipeapp.domain.Recipe;
 import manj.springframework.spring5recipeapp.repositories.RecipeRepository;
 
@@ -24,10 +27,16 @@ public class RecipeServiceImplTest {
 	@Mock
 	RecipeRepository recipeRepository;
 
+	@Mock
+	RecipeCommandToRecipe recipeCommandToRecipe;
+
+	@Mock
+	RecipeToRecipeCommand recipeToRecipeCommand;
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		recipeService = new RecipeServiceImpl(recipeRepository);
+		recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
 
 	}
 
@@ -42,6 +51,7 @@ public class RecipeServiceImplTest {
 		assertEquals(recipes.size(), 1);
 		Mockito.verify(recipeRepository, Mockito.times(1)).findAll();
 	}
+
 	@Test
 	public void testGetRecipesById() {
 		Recipe recipe = new Recipe();
@@ -49,8 +59,8 @@ public class RecipeServiceImplTest {
 		when(recipeRepository.findById(any())).thenReturn(Optional.of(recipe));
 		Recipe returnedRecipe = recipeService.findById(1L);
 		assertNotNull("Null Recipe Returned", returnedRecipe);
-		verify(recipeRepository,times(1)).findById(anyLong());
-		verify(recipeRepository,never()).findAll();
+		verify(recipeRepository, times(1)).findById(anyLong());
+		verify(recipeRepository, never()).findAll();
 	}
 
 }
