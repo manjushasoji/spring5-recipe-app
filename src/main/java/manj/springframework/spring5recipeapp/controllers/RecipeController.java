@@ -2,9 +2,12 @@ package manj.springframework.spring5recipeapp.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import manj.springframework.spring5recipeapp.commands.RecipeCommand;
 import manj.springframework.spring5recipeapp.domain.Recipe;
 import manj.springframework.spring5recipeapp.services.RecipeService;
 
@@ -22,6 +25,20 @@ public class RecipeController {
 		Recipe recipe = recipeService.findById(Long.valueOf(id));
 		model.addAttribute("recipe", recipe);
 		return "recipe/show";
+	}
+	
+	@RequestMapping("recipe/new")
+	public String newRecipe(Model model) {
+		
+		model.addAttribute("recipe",new RecipeCommand());
+		return "recipe/recipeform";
+	}
+	
+	@PostMapping("recipe")
+	public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand) {
+		
+		RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
+		return "redirect:/recipe/show/"+ savedRecipeCommand.getId();
 	}
 
 }
