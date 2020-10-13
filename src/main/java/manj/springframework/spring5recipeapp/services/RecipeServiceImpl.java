@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import manj.springframework.spring5recipeapp.commands.RecipeCommand;
@@ -30,9 +32,9 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public Set<Recipe> getRecipes() {
-		
+
 		log.debug("Inside RecipeService Impl...");
-		
+
 		Set<Recipe> recipes = new HashSet<>();
 		recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
 		return recipes;
@@ -41,19 +43,25 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public Recipe findById(Long id) {
 		Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-		if(!optionalRecipe.isPresent()) {
+		if (!optionalRecipe.isPresent()) {
 			throw new RuntimeException("Recipe Not Found!");
 		}
 		return optionalRecipe.get();
 	}
 
 	@Override
+	@Transactional
 	public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
 		Recipe detachedRecipe = recipeCommandToRecipe.convert(recipeCommand);
 		Recipe savedRecipe = recipeRepository.save(detachedRecipe);
 		return recipeToRecipeCommand.convert(savedRecipe);
 	}
 
+	@Override
+	@Transactional
+	public RecipeCommand findCommandById(Long id) {
 
+		return recipeToRecipeCommand.convert(findById(id));
+	}
 
 }
