@@ -74,7 +74,7 @@ class RecipeControllerTest {
 		when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/recipe/2/update")).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.view().name("recipe/2/show"))
+				.andExpect(MockMvcResultMatchers.view().name("recipe/recipeform"))
 				.andExpect(MockMvcResultMatchers.model().attributeExists("recipe"));
 
 	}
