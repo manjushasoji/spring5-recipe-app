@@ -73,9 +73,19 @@ class RecipeControllerTest {
 		// when
 		when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/recipe/2/upadte")).andExpect(MockMvcResultMatchers.status().isOk())
+		mockMvc.perform(MockMvcRequestBuilders.get("/recipe/2/update")).andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.view().name("recipe/2/show"))
 				.andExpect(MockMvcResultMatchers.model().attributeExists("recipe"));
+
+	}
+
+	@Test
+	public void testDeleteAction() throws Exception {
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/recipe/2/delete"))
+				// .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.view().name("redirect:/"));
 
 	}
 
