@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -15,6 +16,7 @@ import manj.springframework.spring5recipeapp.commands.IngredientCommand;
 import manj.springframework.spring5recipeapp.commands.RecipeCommand;
 import manj.springframework.spring5recipeapp.services.IngredientService;
 import manj.springframework.spring5recipeapp.services.RecipeService;
+import manj.springframework.spring5recipeapp.services.UnitOfMeasureService;
 
 class IngredientControllerTest {
 
@@ -26,11 +28,14 @@ class IngredientControllerTest {
 
 	@Mock
 	IngredientService ingredientService;
+	
+	@Mock
+	UnitOfMeasureService unitOfMeasureService;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		ingredientController = new IngredientController(recipeService, ingredientService);
+		ingredientController = new IngredientController(recipeService, ingredientService,unitOfMeasureService);
 		mockMvc = MockMvcBuilders.standaloneSetup(ingredientController).build();
 	}
 
@@ -56,6 +61,23 @@ class IngredientControllerTest {
 		mockMvc.perform(get("/recipe/1/ingredient/1/show")).andExpect(status().isOk())
 				.andExpect(view().name("/recipe/ingredient/show")).andExpect(model().attributeExists("ingredient"));
 
+	}
+	
+	@Test
+	public void testUpdateIngredient() throws Exception{
+		
+		IngredientCommand ingredientCommand =  new IngredientCommand();
+		ingredientCommand.setRecipeId(1L);
+		ingredientCommand.setId(3L);
+		when(ingredientService.saveIngredientCommand(any())).thenReturn(ingredientCommand);
+		
+		mockMvc.perform(post("/recipe/1/ingredient")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("id", "")
+				.param("description", "some string")
+				)
+				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/recipe/1/ingredient/3/show"));
 	}
 
 }
