@@ -4,6 +4,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.HashSet;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -84,11 +86,12 @@ class IngredientControllerTest {
 	public void testNewIngredient() throws Exception{
 		
 		RecipeCommand recipeCommand = new RecipeCommand();
-		//recipeCommand.setId(1L);
+		recipeCommand.setId(1L);
 		
 		when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+		when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
 		
-		mockMvc.perform(post("/recipe/1/ingredient/new"))
+		mockMvc.perform(get("/recipe/1/ingredient/new"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("recipe/ingredient/ingredientform"))
 			.andExpect(model().attributeExists("ingredient","uomList"));
