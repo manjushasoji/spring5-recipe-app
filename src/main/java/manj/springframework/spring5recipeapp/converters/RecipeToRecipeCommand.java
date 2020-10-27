@@ -9,13 +9,11 @@ import manj.springframework.spring5recipeapp.commands.RecipeCommand;
 import manj.springframework.spring5recipeapp.domain.Recipe;
 
 @Component
-public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand>{
-	
+public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
+
 	private final NotesToNotesCommand notesToNotesCommand;
 	private final CategoryToCategoryCommand categoryToCategoryCommand;
 	private final IngredientToIngredientCommand ingredientToIngredientCommand;
-	
-	
 
 	public RecipeToRecipeCommand(NotesToNotesCommand notesToNotesCommand,
 			CategoryToCategoryCommand categoryToCategoryCommand,
@@ -42,14 +40,15 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand>{
 		recipeCommand.setServings(source.getServings());
 		recipeCommand.setSource(source.getSource());
 		recipeCommand.setUrl(source.getUrl());
+		recipeCommand.setImage(source.getImage());
 		recipeCommand.setNotes(notesToNotesCommand.convert(source.getNotes()));
 		if (source.getCategories() != null && source.getCategories().size() > 0) {
-			source.getCategories()
-					.forEach(category -> recipeCommand.getCategories().add(categoryToCategoryCommand.convert(category)));
+			source.getCategories().forEach(
+					category -> recipeCommand.getCategories().add(categoryToCategoryCommand.convert(category)));
 		}
 		if (source.getIngredients() != null && source.getCategories().size() > 0) {
-			source.getIngredients().forEach(
-					ingredient -> recipeCommand.getIngredients().add(ingredientToIngredientCommand.convert(ingredient)));
+			source.getIngredients().forEach(ingredient -> recipeCommand.getIngredients()
+					.add(ingredientToIngredientCommand.convert(ingredient)));
 		}
 
 		return recipeCommand;
