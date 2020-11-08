@@ -1,6 +1,7 @@
 package manj.springframework.spring5recipeapp.controllers;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -45,7 +46,8 @@ class RecipeControllerTest {
 	void testRecipeNotFound() throws Exception {
 		when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
 		mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/show"))
-				.andExpect(MockMvcResultMatchers.status().isNotFound());
+				.andExpect(MockMvcResultMatchers.status().isNotFound())
+				.andExpect(view().name("404error"));
 
 	}
 
