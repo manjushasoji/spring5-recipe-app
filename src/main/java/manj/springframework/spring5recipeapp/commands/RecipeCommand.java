@@ -37,6 +37,7 @@ public class RecipeCommand {
 	@Min(1)
 	@Max(100)
 	private Integer servings;
+	
 	private String source;
 
 	@URL
@@ -44,6 +45,7 @@ public class RecipeCommand {
 
 	@NotBlank
 	private String directions;
+	
 	private Set<IngredientCommand> ingredients = new HashSet<>();
 	private Byte[] image;
 	private Difficulty difficulty;

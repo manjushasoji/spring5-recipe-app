@@ -3,7 +3,8 @@ package manj.springframework.spring5recipeapp.controllers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import manj.springframework.spring5recipeapp.commands.RecipeCommand;
 import manj.springframework.spring5recipeapp.domain.Recipe;
 import manj.springframework.spring5recipeapp.exceptions.NotFoundException;
 import manj.springframework.spring5recipeapp.services.RecipeService;
+import org.springframework.http.MediaType;
 
 class RecipeControllerTest {
 
@@ -79,12 +81,27 @@ class RecipeControllerTest {
 		// when
 		when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/recipe"))
-				// .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.view().name("redirect:/recipe/2/show"));
+		mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                	.param("id", "")
+                	.param("description", "some string")
+                	.param("directions", "some directions"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/recipe/2/show"));
 
 	}
+	@Test
+    public void testPostNewRecipeFormValidationFail() throws Exception {
+        RecipeCommand command = new RecipeCommand();
+        command.setId(2L);
+
+        when(recipeService.saveRecipeCommand(any())).thenReturn(command);
+
+        mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                						.param("id", ""))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("recipe"))
+                .andExpect(view().name("recipe/recipeform"));
+    }
 
 	@Test
 	public void testGetUpdateView() throws Exception {
